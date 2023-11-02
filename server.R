@@ -109,11 +109,13 @@ server <- function(input, output, session) {
           ggtitle("") +
           labs(colour = gene1) +
           guides(col = guide_legend(ncol = 1))
-        gl <- sort(unique(unlist(s[[gene1]])))
-        if (any(is.na(rv$repel_cols)) | length(rv$repel_cols) < length(gl)) {
-          rv$repel_cols <- setNames(color_repel(g), gl)
+        if (input$doColorRepel) {
+          gl <- sort(unique(unlist(s[[gene1]])))
+          if (any(is.na(rv$repel_cols)) | length(rv$repel_cols) < length(gl)) {
+            rv$repel_cols <- setNames(color_repel(g), gl)
+          }
+          g <- g + scale_color_manual(values = rv$repel_cols)
         }
-        g <- g + scale_color_manual(values = rv$repel_cols)
         g
       } else if (str_detect(slide1, "H&E")) {
         g <- SpatialDimPlot(s, group.by = gene1, images = str_remove(slide1, "_H&E"), alpha = 0, image.alpha = 0.67, stroke = 0)  +
@@ -126,12 +128,13 @@ server <- function(input, output, session) {
           scale_fill_viridis(discrete = TRUE, option = "turbo", alpha = 0.24) +
           ggtitle("") +
           guides(col = guide_legend(ncol = 1))
-        # if (do_color_repel)
-        gl <- sort(unique(unlist(filter(s@meta.data, sample == slide1)[[gene1]])))
-        if (any(is.na(rv$repel_cols)) | length(rv$repel_cols) < length(gl)) {
-          rv$repel_cols <- setNames(color_repel(g), gl)
+        if (input$doColorRepel) {
+          gl <- sort(unique(unlist(filter(s@meta.data, sample == slide1)[[gene1]])))
+          if (any(is.na(rv$repel_cols)) | length(rv$repel_cols) < length(gl)) {
+            rv$repel_cols <- setNames(color_repel(g), gl)
+          }
+          g <- g + scale_fill_manual(values = rv$repel_cols)
         }
-        g <- g + scale_fill_manual(values = rv$repel_cols)
         g
       }
     } else {
@@ -189,11 +192,13 @@ server <- function(input, output, session) {
           ggtitle("") +
           labs(colour = gene2) +
           guides(col = guide_legend(ncol = 1))
-        gl <- sort(unique(unlist(s[[gene2]])))
-        if (any(is.na(rv$repel_cols)) | length(rv$repel_cols) < length(gl)) {
-          rv$repel_cols <- setNames(color_repel(g), gl)
+        if (input$doColorRepel) {
+          gl <- sort(unique(unlist(s[[gene2]])))
+          if (any(is.na(rv$repel_cols)) | length(rv$repel_cols) < length(gl)) {
+            rv$repel_cols <- setNames(color_repel(g), gl)
+          }
+          g <- g + scale_color_manual(values = rv$repel_cols)
         }
-        g <- g + scale_color_manual(values = rv$repel_cols)
         g
       } else if (str_detect(slide2, "H&E")) {
         g <- SpatialDimPlot(s, group.by = gene2, images = str_remove(slide2, "_H&E"), alpha = 0, image.alpha = 0.67, stroke = 0)  +
@@ -206,11 +211,13 @@ server <- function(input, output, session) {
           scale_fill_viridis(discrete = TRUE, option = "turbo", alpha = 0.24) +
           ggtitle("") +
           guides(col = guide_legend(ncol = 1))
-        gl <- sort(unique(unlist(filter(s@meta.data, sample == slide2)[[gene2]])))
-        if (any(is.na(rv$repel_cols)) | length(rv$repel_cols) < length(gl)) {
-          rv$repel_cols <- setNames(color_repel(g), gl)
+        if (input$doColorRepel) {
+          gl <- sort(unique(unlist(filter(s@meta.data, sample == slide2)[[gene2]])))
+          if (any(is.na(rv$repel_cols)) | length(rv$repel_cols) < length(gl)) {
+            rv$repel_cols <- setNames(color_repel(g), gl)
+          }
+          g <- g + scale_fill_manual(values = rv$repel_cols)
         }
-        g <- g + scale_fill_manual(values = rv$repel_cols)
         g
       }
     } else {

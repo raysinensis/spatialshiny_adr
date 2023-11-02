@@ -248,6 +248,13 @@ ui <- fluidPage(
                                    placement = "right"
                   )
               ),
+              div(
+                id = "doColorRepeldiv",
+                checkboxInput("doColorRepel", "optimize color order", value = TRUE, width = NULL) %>%
+                  bs_embed_tooltip("use colorrepel package to maximize visual distinction of nearby cluster colors",
+                                   placement = "right"
+                  )
+              ),
               tags$table(
                 tags$head(
                   tags$style(HTML("#pval{margin-top: 0px; margin-bottom: -10px; font-size:12px;}"))
