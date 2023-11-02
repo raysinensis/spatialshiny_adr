@@ -358,7 +358,7 @@ server <- function(input, output, session) {
                 target="_blank"
     )
     tagList(tags$h6("This is part of an ongoing effort of the ", clean2,
-                    "lead by the Department of Pediatrics, the Morgan Adams Foundation Pediatric Brain Tumor Research Program, and the RNA Bioscience Initiative at the University of Colorado Anschutz Medical Campus."))
+                    "lead by the Division of Endocrinology, Metabolism and Diabetes, and the RNA Bioscience Initiative at the University of Colorado Anschutz Medical Campus."))
   })
   
   output$rawdata <- renderUI({
