@@ -24,15 +24,19 @@ library(shinyBS)
 library(bsplus)
 library(Seurat)
 
-### source R
+# source R
 source("config.R")
+source("www/color_repel.R")
+source("www/utils.R")
+source("www/wrappers.R")
+
+# load data
 s <- readRDS("spatial_all4_reduc.rds")
-# saveRDS(s2, "spatial_all4_reduc.rds")
 s$name <- s$type_incl_apcc
-autocomplete_list <- c("type", "type_incl_apcc", "sample",
+autocomplete_list <- c("type", "type_incl_apcc",
                        "nCount_Spatial", "nFeature_Spatial", "percent_mito", "percent_ribo", "Phase",
                        rownames(s@assays$SCT@data) %>% sort())
-cats <- c("sample", "type", "type_incl_apcc", "Phase")
+cats <- c("type", "type_incl_apcc", "Phase")
 
 slides <- c("umap", 
             s@images %>% names() %>% str_remove("^[A-D]1_") %>% mixedsort(), 

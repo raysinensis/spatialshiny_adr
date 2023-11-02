@@ -1,6 +1,6 @@
 shiny_env = new.env()
 
-# Define server logic required to draw the boxplot and render metadata table
+# Define server logic required to draw and render metadata table
 server <- function(input, output, session) {
   rv <- reactiveValues()
   rv$run2 <- 0
@@ -12,7 +12,8 @@ server <- function(input, output, session) {
   rv$tabinit_plot <- 0
   rv$starttutorial <- 0
   rv$data_prev <- data.frame()
-
+  rv$repel_cols <- NA
+  
   # hide some checkboxes
   removeModal()
   hide("Find")
@@ -89,6 +90,7 @@ server <- function(input, output, session) {
   inid <- eventReactive(rv$actuallygo,
                         {
                           rv$old <<- input$geneID
+                          rv$repel_cols <<- NA
                           shinyjs::runjs("window.scrollTo(0, 0)")
                           input$geneID
                         },
@@ -107,6 +109,14 @@ server <- function(input, output, session) {
           ggtitle("") +
           labs(colour = gene1) +
           guides(col = guide_legend(ncol = 1))
+        if (input$doColorRepel) {
+          gl <- sort(unique(unlist(s[[gene1]])))
+          if (any(is.na(rv$repel_cols)) | length(rv$repel_cols) < length(gl)) {
+            rv$repel_cols <- setNames(color_repel(g), gl)
+          }
+          g <- g + scale_color_manual(values = rv$repel_cols)
+        }
+        g
       } else if (str_detect(slide1, "H&E")) {
         g <- SpatialDimPlot(s, group.by = gene1, images = str_remove(slide1, "_H&E"), alpha = 0, image.alpha = 0.67, stroke = 0)  +
           scale_fill_viridis(discrete = TRUE, option = "turbo", alpha = 0) +
@@ -118,6 +128,14 @@ server <- function(input, output, session) {
           scale_fill_viridis(discrete = TRUE, option = "turbo", alpha = 0.24) +
           ggtitle("") +
           guides(col = guide_legend(ncol = 1))
+        if (input$doColorRepel) {
+          gl <- sort(unique(unlist(filter(s@meta.data, sample == slide1)[[gene1]])))
+          if (any(is.na(rv$repel_cols)) | length(rv$repel_cols) < length(gl)) {
+            rv$repel_cols <- setNames(color_repel(g), gl)
+          }
+          g <- g + scale_fill_manual(values = rv$repel_cols)
+        }
+        g
       }
     } else {
       if (slide1 == "umap") {
@@ -174,6 +192,14 @@ server <- function(input, output, session) {
           ggtitle("") +
           labs(colour = gene2) +
           guides(col = guide_legend(ncol = 1))
+        if (input$doColorRepel) {
+          gl <- sort(unique(unlist(s[[gene2]])))
+          if (any(is.na(rv$repel_cols)) | length(rv$repel_cols) < length(gl)) {
+            rv$repel_cols <- setNames(color_repel(g), gl)
+          }
+          g <- g + scale_color_manual(values = rv$repel_cols)
+        }
+        g
       } else if (str_detect(slide2, "H&E")) {
         g <- SpatialDimPlot(s, group.by = gene2, images = str_remove(slide2, "_H&E"), alpha = 0, image.alpha = 0.67, stroke = 0)  +
           scale_fill_viridis(discrete = TRUE, option = "turbo", alpha = 0) +
@@ -185,6 +211,14 @@ server <- function(input, output, session) {
           scale_fill_viridis(discrete = TRUE, option = "turbo", alpha = 0.24) +
           ggtitle("") +
           guides(col = guide_legend(ncol = 1))
+        if (input$doColorRepel) {
+          gl <- sort(unique(unlist(filter(s@meta.data, sample == slide2)[[gene2]])))
+          if (any(is.na(rv$repel_cols)) | length(rv$repel_cols) < length(gl)) {
+            rv$repel_cols <- setNames(color_repel(g), gl)
+          }
+          g <- g + scale_fill_manual(values = rv$repel_cols)
+        }
+        g
       }
     } else {
       if (slide2 == "umap") {
@@ -324,7 +358,7 @@ server <- function(input, output, session) {
                 target="_blank"
     )
     tagList(tags$h6("This is part of an ongoing effort of the ", clean2,
-                    "lead by the Department of Pediatrics, the Morgan Adams Foundation Pediatric Brain Tumor Research Program, and the RNA Bioscience Initiative at the University of Colorado Anschutz Medical Campus."))
+                    "lead by the Division of Endocrinology, Metabolism and Diabetes, and the RNA Bioscience Initiative at the University of Colorado Anschutz Medical Campus."))
   })
   
   output$rawdata <- renderUI({
