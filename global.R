@@ -23,12 +23,13 @@ library(rintrojs)
 library(shinyBS)
 library(bsplus)
 library(Seurat)
+library(colorrepel)
 
 # source R
 source("config.R")
-source("www/color_repel.R")
-source("www/utils.R")
-source("www/wrappers.R")
+# source("www/color_repel.R")
+# source("www/utils.R")
+# source("www/wrappers.R")
 
 # load data
 s <- readRDS("spatial_all4_reduc.rds")
