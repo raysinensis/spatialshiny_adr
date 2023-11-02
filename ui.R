@@ -29,7 +29,7 @@ jsResetCode <- "shinyjs.reset = function() {history.go(0)}"
 
 # Define UI for application that draws the UMAP
 ui <- fluidPage(
-  title = "PFA Ependymoma Spatial Transcriptomics Atlas",
+  title = "Human Adrenal Gland Spatial Transcriptomics Atlas",
   theme = shinytheme(set_shinytheme),
   tags$style("
     .nav-tabs{
@@ -157,7 +157,7 @@ ui <- fluidPage(
       href = url,
       target="_blank"
     ) %>%
-      bs_embed_tooltip("part of Pediatric Neuro-oncology Cell Atlas project", placement = "bottom"),
+      bs_embed_tooltip("Human Adrenal Gland Spatial Transcriptomics Atlas", placement = "bottom"),
     div(
       code(apptitle),
       style = "font-size:15px;margin-top:2px;display:inline"
@@ -329,7 +329,7 @@ ui <- fluidPage(
         tabPanel(
           introBox(
             span(icon("align-center", class = NULL, lib = "font-awesome"),
-                 "Violin Plot",
+                 "Violin/Box Plot",
                  title = "Plot expression or category data by category"
             ),
             data.step = 5,
